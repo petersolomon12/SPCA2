@@ -18,33 +18,40 @@ public class CartService {
 
     private final ProductRepos productRepos;
     private final PurchaseHistoryService purchaseHistoryService;
+    private final ProductService productService;
     private final CartRepos cartRepos;
     private final FormFactory formFactory;
 
 
     @Inject
-    public CartService(FormFactory formFactory, ProductRepos productRepos, CartRepos cartRepos, PurchaseHistoryService purchaseHistoryService) {
+    public CartService(FormFactory formFactory, ProductRepos productRepos, CartRepos cartRepos, PurchaseHistoryService purchaseHistoryService, ProductService productService) {
         this.productRepos= productRepos;
         this.formFactory = formFactory;
         this.cartRepos = cartRepos;
         this.purchaseHistoryService = purchaseHistoryService;
+        this.productService = productService;
     }
 
     public Cart addItems(Http.Request cartRequest) {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
+        JsonNode postBody = cartRequest.body().asJson();
         User user = new User();
+        Product product = new Product();
 
         UUID uuid = getUuid(cartRequest);
-
-
         user.setId(uuid);
+
+        String id = postBody.get("productUuid").asText();
+        product.setId(UUID.fromString(id));
+
+        cartObject.getProduct().add(productService.getProduct(product));
 
         if (cartRepos.getUserCart(user) == null){
             cartRepos.insertCart(cartObject);
         } else {
             Cart existingCart = cartRepos.getUserCart(user);
-            for (Product product : cartObject.getProduct()){
-                existingCart.getProduct().add(product);
+            for (Product cartProduct : cartObject.getProduct()){
+                existingCart.getProduct().add(cartProduct);
             }
             cartRepos.updateCart(existingCart);
         }
@@ -81,7 +88,7 @@ public class CartService {
         return cartRepos.updateCart(existingCart);
     }
 
-    public Cart purchaseItems(Http.Request cartRequest) throws Exception {
+    public Cart purchaseItem(Http.Request cartRequest) throws Exception {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
         PurchaseHistory purchaseHistory = new PurchaseHistory();
         User user = new User();
@@ -117,8 +124,4 @@ public class CartService {
         String id = postBody.get("uuid").asText();
         return UUID.fromString(id);
     }
-
-
-
-
 }

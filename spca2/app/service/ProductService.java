@@ -60,4 +60,9 @@ public class ProductService {
         return productRepos.getProductByName(productObject.getName());
     }
 
+    public Product getProduct(Product product){
+
+        return productRepos.getProduct(product);
+    }
+
 }

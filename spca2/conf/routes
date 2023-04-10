@@ -16,5 +16,10 @@ POST    /deleteProduct       controllers.ProductController.deleteProduct(req : R
 POST    /viewAdminItems       controllers.ProductController.viewAdminItems(req : Request)
 POST    /searchProduct       controllers.ProductController.searchProduct(req : Request)
 
+POST    /addItems           controllers.CartController.addItems(req: Request)
+POST    /getUserCart           controllers.CartController.getUserCart(req: Request)
+POST    /removeItem           controllers.CartController.removeItem(req: Request)
+POST    /purchaseItem           controllers.CartController.purchaseItem(req: Request)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
