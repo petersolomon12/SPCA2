@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 //TODO ADD JOIN DATE FOR PORTFOLIO PAGE.
@@ -26,17 +27,21 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
+    @OneToMany
+    public List<PurchaseHistory> purchaseHistory;
+
     public User() {
 
     }
 
-    public User(String firstname, String lastname, String password, String email, String address, UserType userType) {
+    public User(String firstname, String lastname, String password, String email, String address, UserType userType, List <PurchaseHistory> purchaseHistory) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
         this.email = email;
         this.address = address;
         this.userType = userType;
+        this.purchaseHistory = purchaseHistory;
     }
 
     public UUID getId() {
@@ -95,6 +100,14 @@ public class User {
         this.userType = userType;
     }
 
+    public List <PurchaseHistory> getPurchaseHistory() {
+        return purchaseHistory;
+    }
+
+    public void setPurchaseHistory(List <PurchaseHistory> purchaseHistory) {
+        this.purchaseHistory = purchaseHistory;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -105,6 +118,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", userType=" + userType +
+                ", purchaseHistory=" + purchaseHistory +
                 '}';
     }
 

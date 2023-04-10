@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -24,15 +25,19 @@ public class Product {
     @ManyToOne
     public User user;
 
+    @OneToMany
+    List<Reviews> reviews;
+
     public Product() {
     }
 
-    public Product(String name, String manufacturer, int stockLevel, String category, User user) {
+    public Product(String name, String manufacturer, int stockLevel, String category, User user, List<Reviews> reviews) {
         this.name = name;
         this.manufacturer = manufacturer;
         this.stockLevel = stockLevel;
         this.category = category;
         this.user = user;
+        this.reviews = reviews;
     }
 
     public UUID getId() {
@@ -83,6 +88,14 @@ public class Product {
         this.user = user;
     }
 
+    public List<Reviews> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Reviews> reviews) {
+        this.reviews = reviews;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -92,6 +105,7 @@ public class Product {
                 ", stockLevel=" + stockLevel +
                 ", category='" + category + '\'' +
                 ", user=" + user +
+                ", reviews=" + reviews +
                 '}';
     }
 }
