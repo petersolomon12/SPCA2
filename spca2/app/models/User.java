@@ -3,10 +3,7 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 //TODO ADD JOIN DATE FOR PORTFOLIO PAGE.
@@ -26,17 +23,20 @@ public class User {
     public String email;
     public String address;
 
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
     public User() {
 
     }
 
-    public User(String firstname, String lastname, String password, String email, String address) {
+    public User(String firstname, String lastname, String password, String email, String address, UserType userType) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
         this.email = email;
         this.address = address;
+        this.userType = userType;
     }
 
     public UUID getId() {
@@ -87,6 +87,14 @@ public class User {
         this.address = address;
     }
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -96,6 +104,12 @@ public class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
+                ", userType=" + userType +
                 '}';
+    }
+
+    public enum UserType {
+        ADMIN,
+        CUSTOMER,
     }
 }

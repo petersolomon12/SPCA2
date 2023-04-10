@@ -3,11 +3,10 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
+@Entity
 public class Product {
 
     @Id
@@ -22,14 +21,18 @@ public class Product {
     public int stockLevel;
     public String category;
 
+    @ManyToOne
+    public User user;
+
     public Product() {
     }
 
-    public Product(String name, String manufacturer, int stockLevel, String category) {
+    public Product(String name, String manufacturer, int stockLevel, String category, User user) {
         this.name = name;
         this.manufacturer = manufacturer;
         this.stockLevel = stockLevel;
         this.category = category;
+        this.user = user;
     }
 
     public UUID getId() {
@@ -72,6 +75,14 @@ public class Product {
         this.category = category;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -80,6 +91,7 @@ public class Product {
                 ", manufacturer='" + manufacturer + '\'' +
                 ", stockLevel=" + stockLevel +
                 ", category='" + category + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

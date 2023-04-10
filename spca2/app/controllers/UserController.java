@@ -17,12 +17,10 @@ import javax.transaction.Transactional;
  */
 public class UserController extends Controller {
 
-    private final FormFactory formFactory;
     private UserService userService;
 
     @Inject
-    public UserController(final FormFactory formFactory, UserService userService) {
-        this.formFactory = formFactory;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -41,13 +39,13 @@ public class UserController extends Controller {
     }
 
     @Transactional
-    public Result deleteUser(Http.Request request){
+    public Result deleteUser(Http.Request request) throws Exception {
         userService.deleteUser(request);
         return ok(Json.toJson("Completed"));
     }
 
     @Transactional
-    public Result updateUser(Http.Request request) {
+    public Result updateUser(Http.Request request) throws Exception {
         User user = userService.updateUser(request);
         return ok(Json.toJson(user));
     }

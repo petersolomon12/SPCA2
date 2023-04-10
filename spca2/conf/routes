@@ -8,5 +8,13 @@ POST    /deleteUser       controllers.UserController.deleteUser(req : Request)
 POST    /updateUser       controllers.UserController.updateUser(req : Request)
 POST    /userInfo       controllers.UserController.getUserInfo(req : Request)
 POST    /userLogin       controllers.UserController.userLogin(req : Request)
+
+
+POST    /addProduct           controllers.ProductController.addProduct(req: Request)
+POST    /updateStock       controllers.ProductController.updateStock(req : Request)
+POST    /deleteProduct       controllers.ProductController.deleteProduct(req : Request)
+POST    /viewAdminItems       controllers.ProductController.viewAdminItems(req : Request)
+POST    /searchProduct       controllers.ProductController.searchProduct(req : Request)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

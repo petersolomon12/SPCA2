@@ -52,49 +52,47 @@ public class UserService {
 
     public User userLogin(Http.Request userRequest) throws Exception {
         User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
-        User existingUsers = this.getUserByEmail(userObject);
 
-        //Checked Database for user "" if result is null then user doesn't exist throw new Exception else check if usernames.equals password.
-        //Throw exception if it doesn't match else return Users
-        if (existingUsers == null){
-            throw new Exception("No such user in database");
-        } else if (!Objects.equals(userObject.password, existingUsers.password)) {
+        User existingUser = userCheck(userObject);
+
+        if (!Objects.equals(userObject.password, existingUser.password)) {
             throw new Exception("Password does not match");
         }
 
-        return existingUsers;
+        return existingUser;
     }
 
-    public void deleteUser(Http.Request userRequest){
-        User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
-        User existingUser = this.getUser(userObject);
+    private User userCheck(User userObject) throws Exception {
+        User existingUser = this.getUserByEmail(userObject);
 
-        //if existingUser is null throws error has there is no user with that id!!
-        if(existingUser == null){
-            try {
-                throw new Exception("User Doesn't exist!!");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        //Checked Database for user "" if result is null then user doesn't exist throw new Exception else check if usernames.equals password.
+        //Throw exception if it doesn't match else return Users
+        if (existingUser == null){
+            throw new Exception("No such user in database");
         }
-        userRepos.deleteUser(userObject);
+        return existingUser;
     }
 
-    public User updateUser(Http.Request userRequest) {
+    public void deleteUser(Http.Request userRequest) throws Exception {
         User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
-        User existingUser = this.getUser(userObject);
+
+        User existingUser = userCheck(userObject);
+
+        userRepos.deleteUser(existingUser);
+    }
+
+    public User updateUser(Http.Request userRequest) throws Exception {
+        User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
+
+
+        User existingUser = userCheck(userObject);
+
+
         User checkUserEmail = this.getUserByEmail(userObject);
 
-        //if existingUser is null throws error has there is no user with that id!!
-        if(existingUser == null){
-            try {
-                throw new Exception("User doesn't exist");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+
         //if checkUserEmail is not null throws error that user is already in database!
-        else if(checkUserEmail != null){
+         if(checkUserEmail != null){
             try {
                 throw new Exception("You can't update this user, use a different email!!");
             } catch (Exception e) {
@@ -125,23 +123,26 @@ public class UserService {
 
         user.setId(uuid);
 
-        //Checks if there is existing User!!
-        User existingUser = this.getUser(user);
-
-        //If existing User is null throw exception
-        if(existingUser  ==  null){
-            try {
-                throw new Exception("User doesn't exist in database");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-        return existingUser;
+        return userCheck(user);
     }
 
     public User getUserByEmail(User user) {
         return userRepos.getUserByEmail(user.getEmail());
     }
+
+
+    public List<User> allCustomers(Http.Request productRequest) {
+
+        List <User> allUsers = userRepos.allUsers();
+        List <User> allCustomers = userRepos.allUsers();
+
+        for (User user : allUsers){
+            if (user.getUserType().equals(User.UserType.CUSTOMER)){
+                allCustomers.add(user);
+            }
+        }
+        return allCustomers;
+    }
+
 
 }
