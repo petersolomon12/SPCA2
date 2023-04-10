@@ -2,17 +2,14 @@ package service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Customer;
 import models.User;
 import play.data.FormFactory;
-import play.libs.Json;
 import play.mvc.Http;
 import repository.UserRepos;
 
-import java.sql.Date;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class UserService {
 

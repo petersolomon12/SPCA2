@@ -3,9 +3,10 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
-import java.sql.Date;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.UUID;
 
 //TODO ADD JOIN DATE FOR PORTFOLIO PAGE.
@@ -24,7 +25,7 @@ public class User {
     public String password;
     public String email;
     public String address;
-    
+
 
     public User() {
 
