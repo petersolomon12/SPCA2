@@ -51,4 +51,9 @@ public class ProductController {
         Product product = productService.searchProduct(request);
         return ok(Json.toJson(product));
     }
+
+    public Result allProducts(Http.Request request) throws Exception {
+        List <Product> product = productService.allProducts(request);
+        return ok(Json.toJson(product));
+    }
 }

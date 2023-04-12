@@ -7,6 +7,7 @@ import play.data.FormFactory;
 import play.mvc.Http;
 import repository.UserRepos;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -76,7 +77,9 @@ public class UserService {
     public void deleteUser(Http.Request userRequest) throws Exception {
         User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
 
-        User existingUser = userCheck(userObject);
+        System.out.println(userObject);
+
+        User existingUser = userRepos.getUser(userObject.getId());
 
         userRepos.deleteUser(existingUser);
     }
@@ -111,30 +114,21 @@ public class UserService {
        return userRepos.allUsers();
     }
 
-    public User getExistingUser(Http.Request objectRequest) throws Exception {
-        JsonNode postBody = objectRequest.body().asJson();
-        //Check if field userId is inputted in body of request.
-        if(!postBody.has("userId")){
-            throw new Exception("No user id inputted");
-        }
+    public User getExistingUser(Http.Request userRequest) throws Exception {
+        User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
 
-        String userId = postBody.get("userId").asText();
-        UUID uuid = UUID.fromString(userId);
+        System.out.println(userObject);
 
-        user.setId(uuid);
-
-        return userCheck(user);
+        return userCheck(userObject);
     }
 
     public User getUserByEmail(User user) {
         return userRepos.getUserByEmail(user.getEmail());
     }
-
-
-    public List<User> allCustomers(Http.Request productRequest) {
+    public List<User> allCustomers() {
+        List <User> allCustomers = new ArrayList<>();
 
         List <User> allUsers = userRepos.allUsers();
-        List <User> allCustomers = userRepos.allUsers();
 
         for (User user : allUsers){
             if (user.getUserType().equals(User.UserType.CUSTOMER)){
@@ -143,6 +137,5 @@ public class UserService {
         }
         return allCustomers;
     }
-
 
 }

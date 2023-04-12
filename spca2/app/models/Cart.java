@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,8 +18,8 @@ public class Cart {
     @Type(type = "uuid-char")
     public UUID id;
 
-    @OneToMany
-    List<Product> product;
+    @OneToMany (fetch = FetchType.EAGER)
+    Set<Product> product;
 
     @ManyToOne
     public User user;
@@ -26,7 +27,7 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(List<Product> product, User user) {
+    public Cart(Set<Product> product, User user) {
         this.product = product;
         this.user = user;
     }
@@ -39,11 +40,11 @@ public class Cart {
         this.id = id;
     }
 
-    public List<Product> getProduct() {
+    public Set<Product> getProduct() {
         return product;
     }
 
-    public void setProduct(List<Product> product) {
+    public void setProduct(Set<Product> product) {
         this.product = product;
     }
 

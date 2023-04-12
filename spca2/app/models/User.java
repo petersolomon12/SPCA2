@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -27,9 +28,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @OneToMany
+    @OneToMany (fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     public List<PurchaseHistory> purchaseHistory;
-
     public User() {
 
     }

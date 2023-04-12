@@ -1,10 +1,12 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -23,15 +25,16 @@ public class Product {
     public String category;
 
     @ManyToOne
+    @JsonIgnoreProperties("purchaseHistory")
     public User user;
 
-    @OneToMany
-    List<Reviews> reviews;
+    @OneToMany (fetch = FetchType.EAGER)
+    Set<Reviews> reviews;
 
     public Product() {
     }
 
-    public Product(String name, String manufacturer, int stockLevel, String category, User user, List<Reviews> reviews) {
+    public Product(String name, String manufacturer, int stockLevel, String category, User user, Set<Reviews> reviews) {
         this.name = name;
         this.manufacturer = manufacturer;
         this.stockLevel = stockLevel;
@@ -88,11 +91,11 @@ public class Product {
         this.user = user;
     }
 
-    public List<Reviews> getReviews() {
+    public Set<Reviews> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Reviews> reviews) {
+    public void setReviews(Set<Reviews> reviews) {
         this.reviews = reviews;
     }
 

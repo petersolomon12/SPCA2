@@ -35,12 +35,16 @@ public class ProductRepos {
         return wrap(entityManager -> getProduct(entityManager, product.getId()));
     }
 
-    public Product getProductByName(String name){
-        return wrap(entityManager -> getProductByName(entityManager, name));
+    public Product getProductByName(String name, User user){
+        return wrap(entityManager -> getProductByName(entityManager, name, user));
     }
 
     public List<Product> allAdminStocks(UUID userid){
         return wrap(entityManager -> allAdminStocks(entityManager, userid));
+    }
+
+    public List <Product> allProducts(){
+        return wrap(this::allProducts);
     }
 
 
@@ -74,12 +78,18 @@ public class ProductRepos {
         return product.isEmpty() ? null : product.get(0) ;
     }
 
+    private List <Product> allProducts(EntityManager entityManager) {
+        List <Product> products;
+        products = entityManager.createQuery("select p from Product p").getResultList();
+        return products;
+    }
 
 
-    public Product getProductByName(EntityManager entityManager, String name) {
+
+    public Product getProductByName(EntityManager entityManager, String name, User user) {
         List<Product> product = null;
-        product =  entityManager.createQuery("select u from Product u where name =: name", Product.class)
-                .setParameter("name" ,name).getResultList();
+        product =  entityManager.createQuery("select u from Product u where name =: name AND user.id =: userid", Product.class)
+                .setParameter("userid", user.getId()).setParameter("name" ,name).getResultList();
         //if result is empty then just return otherwise get me the first user in the list
         return product.isEmpty() ? null : product.get(0) ;
     }

@@ -10,6 +10,7 @@ import play.mvc.Result;
 import service.UserService;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -58,6 +59,12 @@ public class UserController extends Controller {
     @Transactional
     public Result userLogin(Http.Request request) throws Exception {
         User user = userService.userLogin(request);
+        return ok(Json.toJson(user));
+    }
+
+    @Transactional
+    public Result getCustomers(Http.Request request) throws Exception {
+        List<User> user = userService.allCustomers();
         return ok(Json.toJson(user));
     }
 

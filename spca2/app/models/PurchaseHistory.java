@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,14 +18,14 @@ public class PurchaseHistory {
     @Type(type = "uuid-char")
     public UUID id;
 
-    @OneToMany
-    public List<Product> product;
+    @ManyToMany (fetch = FetchType.EAGER)
+    public Set<Product> product;
 
 
     public PurchaseHistory() {
     }
 
-    public PurchaseHistory(List<Product> product) {
+    public PurchaseHistory(Set<Product> product) {
         this.product = product;
     }
 
@@ -36,11 +37,11 @@ public class PurchaseHistory {
         this.id = id;
     }
 
-    public List<Product> getProduct() {
+    public Set<Product> getProduct() {
         return product;
     }
 
-    public void setProduct(List<Product> product) {
+    public void setProduct(Set<Product> product) {
         this.product = product;
     }
 
