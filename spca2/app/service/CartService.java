@@ -59,16 +59,6 @@ public class CartService {
         return cartObject;
     }
 
-    private void setProduct(Cart cartObject, Http.Request cartRequest) {
-        JsonNode postBody = cartRequest.body().asJson();
-        Product product = new Product();
-        String id = postBody.get("productUuid").asText();
-        product.setId(UUID.fromString(id));
-        Set<Product> existingProductList = new HashSet<>();
-        existingProductList.add(productService.getProduct(product));
-        cartObject.setProduct(existingProductList);
-    }
-
 
     public Cart getUserCart(Http.Request cartRequest) throws Exception {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
@@ -79,7 +69,8 @@ public class CartService {
         return getExistingCart(cartObject);
     }
 
-    public Cart removeItem(Http.Request cartRequest) throws Exception {
+    //Iterator Pattern
+    public Cart removeItem(Http.Request cartRequest) {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
         UUID uuid = getUuid(cartRequest);
         Product product = new Product();
