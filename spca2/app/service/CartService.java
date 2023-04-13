@@ -1,10 +1,10 @@
 package service;
 
+import Command.PurchaseCartCommand;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Cart;
 import models.Product;
-import models.PurchaseHistory;
 import models.User;
 import play.data.FormFactory;
 import play.mvc.Http;
@@ -92,26 +92,19 @@ public class CartService {
         return cartRepos.updateCart(existingCart);
     }
 
+    //Added Command Pattern to purchaseItem
     public Cart purchaseItem(Http.Request cartRequest) throws Exception {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
         UUID uuid = getUuid(cartRequest);
         cartObject.setUser(userRepos.getUser(uuid));
 
-        /*
-        Will have a field for json to get user id
-        */
-        for (Product existingProduct : cartRepos.getCart(cartObject).getProduct()) {
-            existingProduct.setStockLevel(existingProduct.getStockLevel() - 1);
-            productRepos.updateProduct(existingProduct);
-        }
-
-        purchaseHistoryService.insertPurchase(getExistingCart(cartObject));
-
-        return cartRepos.deleteCart(cartRepos.getCart(cartObject));
+        PurchaseCartCommand purchaseCommand = new PurchaseCartCommand(cartObject, this, cartRepos, productRepos, purchaseHistoryService);
+        purchaseCommand.execute();
+        return cartObject;
     }
 
 
-    private Cart getExistingCart(Cart cartObject) throws Exception {
+    public Cart getExistingCart(Cart cartObject) throws Exception {
         Cart existingCart = cartRepos.getUserCart(cartObject.getUser());
 
         if (existingCart == null) {
