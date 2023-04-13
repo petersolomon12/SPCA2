@@ -18,7 +18,7 @@ public class Cart {
     @Type(type = "uuid-char")
     public UUID id;
 
-    @OneToMany (fetch = FetchType.EAGER)
+    @ManyToMany  (fetch = FetchType.EAGER)
     Set<Product> product;
 
     @ManyToOne

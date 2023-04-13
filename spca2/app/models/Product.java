@@ -24,6 +24,8 @@ public class Product {
     public int stockLevel;
     public String category;
 
+    public int price;
+
     @ManyToOne
     @JsonIgnoreProperties("purchaseHistory")
     public User user;
@@ -34,11 +36,12 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String manufacturer, int stockLevel, String category, User user, Set<Reviews> reviews) {
+    public Product(String name, String manufacturer, int stockLevel, String category, int price, User user, Set<Reviews> reviews) {
         this.name = name;
         this.manufacturer = manufacturer;
         this.stockLevel = stockLevel;
         this.category = category;
+        this.price = price;
         this.user = user;
         this.reviews = reviews;
     }
@@ -99,6 +102,14 @@ public class Product {
         this.reviews = reviews;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -107,6 +118,7 @@ public class Product {
                 ", manufacturer='" + manufacturer + '\'' +
                 ", stockLevel=" + stockLevel +
                 ", category='" + category + '\'' +
+                ", price=" + price +
                 ", user=" + user +
                 ", reviews=" + reviews +
                 '}';

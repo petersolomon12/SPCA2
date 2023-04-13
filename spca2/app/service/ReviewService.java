@@ -37,11 +37,13 @@ public class ReviewService {
         product.setId(uuid);
         Product existingProduct = productService.getProduct(product);
 
-        existingProduct.getReviews().add(reviewRepos.insertReview(reviewObject));
+        Reviews persistReview = reviewRepos.insertReview(reviewObject);
+
+        existingProduct.getReviews().add(persistReview);
 
         productRepos.updateProduct(existingProduct);
 
-        return reviewObject;
+        return persistReview;
     }
 
     private static UUID getUuid(Http.Request cartRequest) {

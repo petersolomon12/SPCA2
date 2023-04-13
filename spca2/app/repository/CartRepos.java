@@ -2,7 +2,6 @@ package repository;
 
 import com.google.inject.Inject;
 import models.Cart;
-import models.Product;
 import models.User;
 import play.db.jpa.JPAApi;
 
