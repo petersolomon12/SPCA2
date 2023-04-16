@@ -2,6 +2,8 @@ package service;
 
 import Command.AddProductCommand;
 import Command.PurchaseCartCommand;
+import Iterator.AvailProductIterator;
+import Iterator.ProductIterator;
 import Strategy.JsonUuid;
 import Strategy.Uuid;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -73,16 +75,11 @@ public class ProductService {
         return productRepos.getProductByName(productObject.getName(), productObject.getUser());
     }
 
+    //Added Iterator Pattern
     public List <Product> allProducts(Http.Request productRequest){
-        List <Product> activeProducts = new ArrayList<>();
+        AvailProductIterator productIterator = new AvailProductIterator(productRepos.allProducts());
 
-        for (Product product : productRepos.allProducts()){
-            if (product.getStockLevel() > 0){
-                activeProducts.add(product);
-            }
-        }
-
-        return activeProducts;
+        return productIterator.getActiveProducts();
     }
 
     public Product getProduct(Product product){
