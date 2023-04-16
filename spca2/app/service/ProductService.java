@@ -1,21 +1,19 @@
 package service;
 
 import Command.AddProductCommand;
-import Command.PurchaseCartCommand;
+import Factory.ProductFactory;
 import Iterator.AvailProductIterator;
-import Iterator.ProductIterator;
 import Strategy.JsonUuid;
 import Strategy.Uuid;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Product;
 import models.User;
+import net.bytebuddy.implementation.bind.annotation.Super;
 import play.data.FormFactory;
 import play.mvc.Http;
 import repository.ProductRepos;
 import repository.UserRepos;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +22,6 @@ public class ProductService {
     private final ProductRepos productRepos;
     private final UserRepos userRepos;
     private final FormFactory formFactory;
-
-    Uuid jsonUuid = new JsonUuid();
 
 
 
@@ -64,13 +60,10 @@ public class ProductService {
         return productRepos.allAdminStocks(productObject.getId());
     }
 
-    //ADDED STRATEGY PATTERN
+    //ADDED STRATEGY PATTERN, FACTORY PATTERN
     public Product searchProduct(Http.Request productRequest) {
-        Product productObject = formFactory.form(Product.class).bindFromRequest(productRequest).get();
-        UUID uuid = jsonUuid.getUuid(productRequest);
-
-        User existingUser = userRepos.getUser(uuid);
-        productObject.setUser(existingUser);
+        ProductFactory productFactory = new ProductFactory(userRepos, formFactory);
+        Product productObject = productFactory.createProduct(productRequest);
 
         return productRepos.getProductByName(productObject.getName(), productObject.getUser());
     }

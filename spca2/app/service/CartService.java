@@ -39,7 +39,7 @@ public class CartService {
         this.productService = productService;
     }
 
-    //ADDED BUILDER FACTORY, STRATEGY PATTERN
+    //ADDED BUILDER PATTERN, STRATEGY PATTERN
     public Cart addItems(Http.Request cartRequest) {
         UUID uuid = jsonUuid.getUuid(cartRequest);
 
