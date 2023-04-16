@@ -1,5 +1,8 @@
 package service;
 
+import Decorator.DupUserValidator;
+import Decorator.EmailValidator;
+import Decorator.UserValidator;
 import com.google.inject.Inject;
 import models.User;
 import play.data.FormFactory;
@@ -13,7 +16,7 @@ import java.util.Objects;
 public class UserService {
 
     private final UserRepos userRepos;
-    private final  FormFactory formFactory;
+    public final FormFactory formFactory;
     private final User user = new User();
 
 
@@ -24,24 +27,14 @@ public class UserService {
     }
 
     public User addUser(Http.Request userRequest) throws Exception {
-        User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
+        User user = formFactory.form(User.class).bindFromRequest(userRequest).get();
+        UserValidator emailValidator = new EmailValidator();
+        UserValidator dupUserValidator = new DupUserValidator(userRepos);
 
-        if(Objects.equals(userObject.email, "")){
-            throw new Exception("Email is null can't register");
-        }
-        //check if user email address already exist
-        User existingUserByEmail = this.getUserByEmail(userObject);
+        user = emailValidator.validateUser(user);
+        user = dupUserValidator.validateUser(user);
 
-        if(existingUserByEmail != null){
-            //complain that user already exist
-            try {
-                throw new Exception("User already exist");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        return userRepos.insertUser(userObject);
+        return userRepos.insertUser(user);
     }
 
     //getUser default is by id when not specified.

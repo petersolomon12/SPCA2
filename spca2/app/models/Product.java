@@ -1,5 +1,6 @@
 package models;
 
+import Visitor.ProductVisitor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -108,6 +109,10 @@ public class Product {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public void accept(ProductVisitor visitor) {
+        visitor.visit(this);
     }
 
     @Override

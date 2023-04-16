@@ -2,6 +2,7 @@ package service;
 
 import Strategy.JsonUuid;
 import Strategy.Uuid;
+import Visitor.ReviewVisitor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Product;
@@ -34,7 +35,7 @@ public class ReviewService {
         this.productRepos = productRepos;
     }
 
-    //ADDED STRATEGY PATTERN
+    //ADDED STRATEGY PATTERN, VISITOR PATTERN
     public Reviews addReview(Http.Request reviewRequest){
         Reviews reviewObject = formFactory.form(Reviews.class).bindFromRequest(reviewRequest).get();
 
@@ -43,13 +44,13 @@ public class ReviewService {
         product.setId(uuid);
         Product existingProduct = productService.getProduct(product);
 
-        Reviews persistReview = reviewRepos.insertReview(reviewObject);
+        ReviewVisitor reviewVisitor = new ReviewVisitor(reviewObject, reviewRepos);
 
-        existingProduct.getReviews().add(persistReview);
+        existingProduct.accept(reviewVisitor);
 
         productRepos.updateProduct(existingProduct);
 
-        return persistReview;
+        return reviewVisitor.getPersistedReview();
     }
 
 

@@ -12,8 +12,8 @@ import java.util.Set;
 
 public class PurchasingHistoryFacade {
 
-    private PurchaseHistoryRepos purchaseHistoryRepos;
-    private UserRepos userRepos;
+    private final PurchaseHistoryRepos purchaseHistoryRepos;
+    private final UserRepos userRepos;
 
     public PurchasingHistoryFacade(PurchaseHistoryRepos purchaseHistoryRepos, UserRepos userRepos) {
         this.purchaseHistoryRepos = purchaseHistoryRepos;
