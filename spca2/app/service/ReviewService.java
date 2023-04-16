@@ -22,7 +22,7 @@ public class ReviewService {
     private final ProductRepos productRepos;
     private final FormFactory formFactory;
 
-    Uuid jsonUuid = new JsonUuid();
+    JsonUuid jsonUuid = JsonUuid.getInstance();
 
 
 

@@ -16,7 +16,7 @@ public class AddProductCommand implements ProductCommand {
     private final ProductRepos productRepos;
     private final UserRepos userRepos;
     private final FormFactory formFactory;
-    Uuid jsonUuid = new JsonUuid();
+    JsonUuid jsonUuid = JsonUuid.getInstance();
 
 
 

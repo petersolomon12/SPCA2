@@ -26,7 +26,7 @@ public class CartService {
     private final UserRepos userRepos;
     private final FormFactory formFactory;
 
-    Uuid jsonUuid = new JsonUuid();
+    JsonUuid jsonUuid = JsonUuid.getInstance();
 
 
     @Inject

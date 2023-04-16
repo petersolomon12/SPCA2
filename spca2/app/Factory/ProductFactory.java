@@ -14,7 +14,7 @@ public class ProductFactory {
     private final UserRepos userRepos;
 
     private final FormFactory formFactory;
-    Uuid jsonUuid = new JsonUuid();
+    JsonUuid jsonUuid = JsonUuid.getInstance();
 
 
     public ProductFactory(UserRepos userRepos, FormFactory formFactory) {

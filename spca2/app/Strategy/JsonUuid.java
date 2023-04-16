@@ -6,6 +6,17 @@ import play.mvc.Http;
 import java.util.UUID;
 
 public class JsonUuid implements Uuid {
+    private static JsonUuid instance;
+
+    private JsonUuid() {}
+
+    //Added Singleton to create one instance
+    public static synchronized JsonUuid getInstance() {
+        if (instance == null) {
+            instance = new JsonUuid();
+        }
+        return instance;
+    }
 
     @Override
     public UUID getUuid(Http.Request request) {

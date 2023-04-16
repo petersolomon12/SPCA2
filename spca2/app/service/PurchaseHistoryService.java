@@ -1,5 +1,6 @@
 package service;
 
+import Facade.PurchasingHistoryFacade;
 import com.google.inject.Inject;
 import models.Cart;
 import models.Product;
@@ -27,20 +28,9 @@ public class PurchaseHistoryService {
         this.purchaseHistoryRepos = purchaseHistoryRepos;
     }
 
+    //ADDED FACADE PATTERN
     public void insertPurchase(Cart cart){
-        PurchaseHistory purchaseHistory = new PurchaseHistory();
-
-        Set<Product> existingProductList = new HashSet<>(cart.getProduct());
-
-        purchaseHistory.setProduct(existingProductList);
-
-        PurchaseHistory existingPurchase = purchaseHistoryRepos.insertPurchaseHistory(purchaseHistory);
-
-        User existingUser = userRepos.getUser(cart.getUser().getId());
-
-         existingUser.getPurchaseHistory().add(existingPurchase);
-         userRepos.updateUser(existingUser);
+        PurchasingHistoryFacade purchasingHistoryFacade = new PurchasingHistoryFacade(purchaseHistoryRepos, userRepos);
+        purchasingHistoryFacade.insertPurchase(cart);
     }
-
-
 }
