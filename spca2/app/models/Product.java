@@ -112,7 +112,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "ProductCommand{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +

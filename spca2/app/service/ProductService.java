@@ -1,5 +1,7 @@
 package service;
 
+import Command.AddProductCommand;
+import Command.PurchaseCartCommand;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Product;
@@ -27,19 +29,11 @@ public class ProductService {
         this.userRepos = userRepos;
     }
 
-    public Product addProduct(Http.Request productRequest) throws Exception {
-        Product productObject = formFactory.form(Product.class).bindFromRequest(productRequest).get();
-        UUID uuid = getUuid(productRequest);
+    //Added Command Pattern to addProduct
+        public Product addProduct(Http.Request productRequest) throws Exception {
+        AddProductCommand addProductCommand = new AddProductCommand(productRequest, productRepos, userRepos, formFactory);
 
-        User existingUser = userRepos.getUser(uuid);
-        productObject.setUser(existingUser);
-
-
-        if(productRepos.getProductByName(productObject.getName(), productObject.getUser()) != null){
-            throw new Exception("Already have a product with this name");
-        }
-
-        return productRepos.insertProduct(productObject);
+        return addProductCommand.execute();
     }
 
     public Product updateStock(Http.Request productRequest) {
@@ -89,7 +83,7 @@ public class ProductService {
         return productRepos.getProduct(product);
     }
 
-    private static UUID getUuid(Http.Request cartRequest) {
+    public static UUID getUuid(Http.Request cartRequest) {
         JsonNode postBody = cartRequest.body().asJson();
 
         String id = postBody.get("uuid").asText();
