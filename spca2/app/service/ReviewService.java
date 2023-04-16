@@ -1,5 +1,7 @@
 package service;
 
+import Strategy.JsonUuid;
+import Strategy.Uuid;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Product;
@@ -20,6 +22,9 @@ public class ReviewService {
     private final ProductRepos productRepos;
     private final FormFactory formFactory;
 
+    Uuid jsonUuid = new JsonUuid();
+
+
 
     @Inject
     public ReviewService(FormFactory formFactory, ReviewRepos reviewRepos, ProductService productService, ProductRepos productRepos) {
@@ -29,10 +34,11 @@ public class ReviewService {
         this.productRepos = productRepos;
     }
 
+    //ADDED STRATEGY PATTERN
     public Reviews addReview(Http.Request reviewRequest){
         Reviews reviewObject = formFactory.form(Reviews.class).bindFromRequest(reviewRequest).get();
 
-        UUID uuid = getUuid(reviewRequest);
+        UUID uuid = jsonUuid.getUuid(reviewRequest);
         Product product = new Product();
         product.setId(uuid);
         Product existingProduct = productService.getProduct(product);
@@ -46,11 +52,6 @@ public class ReviewService {
         return persistReview;
     }
 
-    private static UUID getUuid(Http.Request cartRequest) {
-        JsonNode postBody = cartRequest.body().asJson();
 
-        String id = postBody.get("uuid").asText();
-        return UUID.fromString(id);
-    }
 
 }

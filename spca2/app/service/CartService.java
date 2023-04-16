@@ -1,6 +1,8 @@
 package service;
 
 import Command.PurchaseCartCommand;
+import Strategy.JsonUuid;
+import Strategy.Uuid;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Cart;
@@ -24,6 +26,8 @@ public class CartService {
     private final UserRepos userRepos;
     private final FormFactory formFactory;
 
+    Uuid jsonUuid = new JsonUuid();
+
 
     @Inject
     public CartService(FormFactory formFactory, ProductRepos productRepos, CartRepos cartRepos, UserRepos userRepos, PurchaseHistoryService purchaseHistoryService, ProductService productService) {
@@ -35,9 +39,9 @@ public class CartService {
         this.productService = productService;
     }
 
-    //ADDED BUILDER FACTORY
+    //ADDED BUILDER FACTORY, STRATEGY PATTERN
     public Cart addItems(Http.Request cartRequest) {
-        UUID uuid = getUuid(cartRequest);
+        UUID uuid = jsonUuid.getUuid(cartRequest);
 
         CartBuilder cartBuilder = new CartBuilder()
                 .setUser(userRepos.getUser(uuid))
@@ -59,20 +63,20 @@ public class CartService {
         return cartObject;
     }
 
-
+    //ADDED STRATEGY PATTERN
     public Cart getUserCart(Http.Request cartRequest) throws Exception {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
-        UUID uuid = getUuid(cartRequest);
+        UUID uuid = jsonUuid.getUuid(cartRequest);
 
         cartObject.setUser(userRepos.getUser(uuid));
 
         return getExistingCart(cartObject);
     }
 
-    //Iterator Pattern
+    //Iterator Pattern, STRATEGY PATTERN
     public Cart removeItem(Http.Request cartRequest) {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
-        UUID uuid = getUuid(cartRequest);
+        UUID uuid = jsonUuid.getUuid(cartRequest);
         Product product = new Product();
         product.setId(uuid);
 
@@ -92,10 +96,10 @@ public class CartService {
         return cartRepos.updateCart(existingCart);
     }
 
-    //Added Command Pattern to purchaseItem
+    //Added Command Pattern to purchaseItem, STRATEGY PATTERN
     public Cart purchaseItem(Http.Request cartRequest) throws Exception {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
-        UUID uuid = getUuid(cartRequest);
+        UUID uuid = jsonUuid.getUuid(cartRequest);
         cartObject.setUser(userRepos.getUser(uuid));
 
         PurchaseCartCommand purchaseCommand = new PurchaseCartCommand(cartObject, this, cartRepos, productRepos, purchaseHistoryService);
@@ -113,12 +117,6 @@ public class CartService {
         return existingCart;
     }
 
-    private static UUID getUuid(Http.Request cartRequest) {
-        JsonNode postBody = cartRequest.body().asJson();
-
-        String id = postBody.get("uuid").asText();
-        return UUID.fromString(id);
-    }
 
     private class CartBuilder {
         private User user;
@@ -136,12 +134,11 @@ public class CartService {
             products.add(product);
             return this;
         }
-
+        //ADDED STRATEGY PATTERN
         public CartBuilder addProductFromRequest(Http.Request cartRequest) {
-            JsonNode postBody = cartRequest.body().asJson();
+            UUID id = jsonUuid.getProductUuid(cartRequest);
             Product product = new Product();
-            String id = postBody.get("productUuid").asText();
-            product.setId(UUID.fromString(id));
+            product.setId(id);
             product = productService.getProduct(product);
             return addProduct(product);
         }

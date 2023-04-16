@@ -2,6 +2,8 @@ package service;
 
 import Command.AddProductCommand;
 import Command.PurchaseCartCommand;
+import Strategy.JsonUuid;
+import Strategy.Uuid;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Product;
@@ -20,6 +22,9 @@ public class ProductService {
     private final ProductRepos productRepos;
     private final UserRepos userRepos;
     private final FormFactory formFactory;
+
+    Uuid jsonUuid = new JsonUuid();
+
 
 
     @Inject
@@ -56,9 +61,11 @@ public class ProductService {
 
         return productRepos.allAdminStocks(productObject.getId());
     }
+
+    //ADDED STRATEGY PATTERN
     public Product searchProduct(Http.Request productRequest) {
         Product productObject = formFactory.form(Product.class).bindFromRequest(productRequest).get();
-        UUID uuid = getUuid(productRequest);
+        UUID uuid = jsonUuid.getUuid(productRequest);
 
         User existingUser = userRepos.getUser(uuid);
         productObject.setUser(existingUser);
@@ -81,13 +88,6 @@ public class ProductService {
     public Product getProduct(Product product){
 
         return productRepos.getProduct(product);
-    }
-
-    public static UUID getUuid(Http.Request cartRequest) {
-        JsonNode postBody = cartRequest.body().asJson();
-
-        String id = postBody.get("uuid").asText();
-        return UUID.fromString(id);
     }
 
 }

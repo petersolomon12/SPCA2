@@ -1,6 +1,5 @@
 package service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.User;
 import play.data.FormFactory;
@@ -10,7 +9,6 @@ import repository.UserRepos;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class UserService {
 
@@ -76,8 +74,6 @@ public class UserService {
 
     public void deleteUser(Http.Request userRequest) throws Exception {
         User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
-
-        System.out.println(userObject);
 
         User existingUser = userRepos.getUser(userObject.getId());
 
