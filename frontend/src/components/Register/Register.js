@@ -130,7 +130,7 @@ const Register = () => {
                                 <div class="flex relative ">
 
 
-                                    <input type="text" id="design-login-email" required onChange={(e) => setEmail(e.target.value)} class=" flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Email Address" />
+                                    <input type="text" id="design-login-email" required onChange={(e) => setEmail(e.target.value)} class="flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Email Address" />
                                     <input type="text" id="design-login-email" required onChange={(e) => setAddress(e.target.value)} class=" flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Address" />
                                     <input list="data" class=" flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                                         onChange={(e) => setPaymentType(e.target.value)} placeholder=" Payment Method" />
