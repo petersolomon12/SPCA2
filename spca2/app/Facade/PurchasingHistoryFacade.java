@@ -25,7 +25,9 @@ public class PurchasingHistoryFacade {
         Set<Product> existingProductList = new HashSet<>(cart.getProduct());
         purchaseHistory.setProduct(existingProductList);
         PurchaseHistory existingPurchase = purchaseHistoryRepos.insertPurchaseHistory(purchaseHistory);
-        updatePurchaseHistory(cart.getUser(), existingPurchase);
+        User existingUser = userRepos.getUser(cart.getUser().getId());
+        updatePurchaseHistory(existingUser, existingPurchase);
+        System.out.println("Line 29");
     }
 
     private void updatePurchaseHistory(User user, PurchaseHistory purchaseHistory) {

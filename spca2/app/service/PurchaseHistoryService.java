@@ -30,6 +30,7 @@ public class PurchaseHistoryService {
 
     //ADDED FACADE PATTERN
     public void insertPurchase(Cart cart){
+        System.out.println("LINE 33");
         PurchasingHistoryFacade purchasingHistoryFacade = new PurchasingHistoryFacade(purchaseHistoryRepos, userRepos);
         purchasingHistoryFacade.insertPurchase(cart);
     }

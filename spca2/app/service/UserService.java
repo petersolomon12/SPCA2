@@ -3,13 +3,13 @@ package service;
 import Decorator.DupUserValidator;
 import Decorator.EmailValidator;
 import Decorator.UserValidator;
+import Flyweight.Flyweight;
 import com.google.inject.Inject;
 import models.User;
 import play.data.FormFactory;
 import play.mvc.Http;
 import repository.UserRepos;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -76,23 +76,10 @@ public class UserService {
     public User updateUser(Http.Request userRequest) throws Exception {
         User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
 
+        UserValidator dupUserValidator = new DupUserValidator(userRepos);
+        dupUserValidator.validateUser(userObject);
 
-        User existingUser = userCheck(userObject);
-
-
-        User checkUserEmail = this.getUserByEmail(userObject);
-
-
-        //if checkUserEmail is not null throws error that user is already in database!
-         if(checkUserEmail != null){
-            try {
-                throw new Exception("You can't update this user, use a different email!!");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-       return userRepos.updateUser(userObject);
+        return userRepos.updateUser(userObject);
     }
 
     public User updatedUser(User userObject){
@@ -114,17 +101,9 @@ public class UserService {
     public User getUserByEmail(User user) {
         return userRepos.getUserByEmail(user.getEmail());
     }
-    public List<User> allCustomers() {
-        List <User> allCustomers = new ArrayList<>();
-
-        List <User> allUsers = userRepos.allUsers();
-
-        for (User user : allUsers){
-            if (user.getUserType().equals(User.UserType.CUSTOMER)){
-                allCustomers.add(user);
-            }
-        }
-        return allCustomers;
+    public List<User> allCustomers() throws IllegalAccessException {
+        Flyweight flyweight = new Flyweight(userRepos);
+        return flyweight.getUsersByType(User.UserType.CUSTOMER);
     }
 
 }

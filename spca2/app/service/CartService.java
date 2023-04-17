@@ -101,7 +101,7 @@ public class CartService {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
         UUID uuid = jsonUuid.getUuid(cartRequest);
         cartObject.setUser(userRepos.getUser(uuid));
-
+        System.out.println("Line 104");
         PurchaseCartCommand purchaseCommand = new PurchaseCartCommand(cartObject, this, cartRepos, productRepos, purchaseHistoryService);
         purchaseCommand.execute();
         return cartObject;
