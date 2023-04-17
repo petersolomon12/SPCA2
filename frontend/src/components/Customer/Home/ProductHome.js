@@ -163,7 +163,7 @@ const ProductHome = () => {
           "Accept": 'application/json',
           withCredentials: true
         }).then((result) => {
-          alert('Succesfully Added to Cart')
+          alert('Succesfully Added Review')
           window.location.reload()
         })
 
@@ -205,7 +205,7 @@ const ProductHome = () => {
       <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5 ml-72">
         <div className=" ml-8">
           <input
-            className="mb-6"
+            class="mb-6 flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             type="text"
             placeholder="Search by name"
             onChange={(e) => {
@@ -213,7 +213,7 @@ const ProductHome = () => {
             }}
           />
           <input
-            className="mb-6"
+            class="mb-6 flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             type="text"
             placeholder="Search by category"
             onChange={(e) => {
@@ -250,6 +250,7 @@ const ProductHome = () => {
                 </tr>
               ))}
             </thead>
+
             <tbody class="divide-y divide-gray-100 border-t border-gray-100" {...getTableBodyProps()}>
               {rows.map((row) => {
                 prepareRow(row);
@@ -261,6 +262,8 @@ const ProductHome = () => {
                   </tr>
                 );
               })}
+
+
             </tbody>
             {showModal1 ? (
               <div id="small-modal" tabindex="-1" style={{ paddingLeft: "19.5rem" }} class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
@@ -268,7 +271,7 @@ const ProductHome = () => {
                   <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                       <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                        Edit Profile
+                        Add Review
                       </h3>
 
 

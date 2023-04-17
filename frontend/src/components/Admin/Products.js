@@ -1,6 +1,6 @@
 import axios from "../../api/axios";
 import React, { useEffect, useMemo, useState } from 'react';
-import { useTable, useFilters } from 'react-table';
+import { useTable, useFilters, useSortBy } from 'react-table';
 import AdminNav from "./Nav/AdminNav";
  
 
@@ -84,11 +84,11 @@ const Products = () => {
         accessor: 'stockLevel',
       },
       {
-        Header: 'Add To Cart',
+        Header: 'Update Stock Level',
         accessor: 'id',
         Cell: ({ row }) => (
           <button onClick={() => toggleModal1(row.original.id)}>
-            Add to cart
+            Update Stock
           </button>
         ),
       },
@@ -102,7 +102,6 @@ const Products = () => {
     }),
     []
   );
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -113,10 +112,12 @@ const Products = () => {
   } = useTable(
     {
       columns,
-      data: data || [], // add null check here
+      data,
       defaultColumn,
+      initialState: { sortBy: [{ id: 'price', desc: false }] },
     },
-    useFilters
+    useFilters,
+    useSortBy
   );
 
   const handleSubmit = async () => {
@@ -147,23 +148,55 @@ const Products = () => {
         <AdminNav />
 
         <div className="ml-96">
+          <div className="mb-4">
         <input
           type="text"
+          class="flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+          placeholder="Search by name"
+          onChange={(e) => {
+            setFilter('name', e.target.value);
+          }}
+        />
+        <input
+          type="text"
+          class="flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
           placeholder="Search by category"
           onChange={(e) => {
             setFilter('category', e.target.value);
           }}
         />
+        </div>
         <table class="w-full border-collapse bg-white text-left text-sm text-gray-500" {...getTableProps()}>
-          <thead class="bg-gray-50">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th class="px-6 py-4 font-medium text-gray-900" {...column.getHeaderProps()}>{column.render('Header')}</th>
-                ))}
-              </tr>
-            ))}
-          </thead>
+            <thead class="bg-gray-50">
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      className={`${column.isSorted
+                        ? column.isSortedDesc
+                          ? 'sorted-desc'
+                          : 'sorted-asc'
+                        : ''
+                        }`}
+                    >
+                      {column.render('Header')}
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <span className="ml-2">▼</span>
+                        ) : (
+                          <span className="ml-2">▲</span>
+                        )
+                      ) : (
+                        ''
+                      )}
+                    </th>
+
+                  ))}
+                </tr>
+              ))}
+            </thead>
+
           <tbody class="divide-y divide-gray-100 border-t border-gray-100" {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -182,7 +215,7 @@ const Products = () => {
                                     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                         <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
                                             <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                                                Edit Profile
+                                                Update Stock
                                             </h3>
 
 

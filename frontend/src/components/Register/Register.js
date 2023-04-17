@@ -2,6 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router";
+import Select from 'react-select';
+
 
 import axios from "../../api/axios";
 
@@ -22,6 +24,10 @@ const Register = () => {
     const [address, setAddress] = useState("");
     const [userType, setUserType] = useState('');
     const history = useHistory();
+    const [isClearable, setIsClearable] = useState(true);
+    const data = ['MASTERCARD', "VISA"];
+
+
 
     const [errMsg, setErrMsg] = useState('');
 
@@ -30,7 +36,7 @@ const Register = () => {
         if (userType == "") {
             setUserType('Musician');
         }
-        const data = JSON.stringify({ firstname, lastname, email, phone, password, userType, address })
+        const data = JSON.stringify({ firstname, lastname, email, phone, password, userType, address, paymentType })
         e.preventDefault();
         // if button enabled with JS hack
 
@@ -66,13 +72,14 @@ const Register = () => {
         }
     }
 
+    const [paymentType, setPaymentType] = useState(null);
 
     return (
         <>
 
             <div class=" flex-wrap w-full">
 
-            
+
                 <div class="flex pb-4 flex-col py-10 w-full mt-52">
 
                     <div class="flex flex-col justify-center items-center">
@@ -82,7 +89,7 @@ const Register = () => {
 
                             <div class=" flex-col w-1/2  mb-4">
                                 <div class="flex relative ">
-                                    <lable className="text-black">  ADMIN 
+                                    <lable className="text-black">  ADMIN
 
                                         <input type="radio"
                                             name="type"
@@ -119,19 +126,24 @@ const Register = () => {
                             </div>
 
 
-                            <div class=" flex-col w-1/2">
+                            <div class=" flex-col w-1/2 mb-4">
                                 <div class="flex relative ">
 
 
                                     <input type="text" id="design-login-email" required onChange={(e) => setEmail(e.target.value)} class=" flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Email Address" />
                                     <input type="text" id="design-login-email" required onChange={(e) => setAddress(e.target.value)} class=" flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Address" />
+                                    <input list="data" class=" flex-1 appearance-none border border-gray-300 mr-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                        onChange={(e) => setPaymentType(e.target.value)} placeholder=" Payment Method" />
+                                    <datalist id="data">
 
+                                        {data.map((op) => <option>{op}</option>)}
+                                    </datalist><br /><br />
 
                                 </div>
 
                             </div>
-            
-        
+
+
 
                             <div class="pl-14">
                                 <button type="submit" class="px-4 py-2 text-base font-semibold text-center text-white transition duration-200 ease-in bg-black shadow-md hover:text-black hover:bg-white focus:outline-none focus:ring-2">

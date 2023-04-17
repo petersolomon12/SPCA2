@@ -1,11 +1,15 @@
 const MusNav = () => {
+  const userObject = localStorage.getItem("User");
+  var userObj = JSON.parse(userObject);
+  const firstname = userObj.firstname;
+  const lastname = userObj.lastname;
   return ( 
       
       <aside id="default-sidebar" class="fixed mt-0 my-16 top-0 left-0 z-40 w-44 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
       <div class="h-full fixed px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 border-r">
         <div class="flex flex-col w-56 bg-white rounded-r-3xl overflow-hidden">
           <div class="flex items-center justify-center h-20 shadow-md">
-            <h1 class="text-3xl uppercase text-indigo-500">Logo</h1>
+          <h1 class="text-3xl uppercase text-indigo-500">{firstname}</h1>
           </div>
           <ul class="flex flex-col py-4">
             <li>
