@@ -1,7 +1,6 @@
 package Command;
 
 import Strategy.JsonUuid;
-import Strategy.Uuid;
 import models.Product;
 import models.User;
 import play.data.FormFactory;

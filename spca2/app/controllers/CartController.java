@@ -2,12 +2,10 @@ package controllers;
 
 import com.google.inject.Inject;
 import models.Cart;
-import models.Product;
 import play.libs.Json;
 import play.mvc.Http;
 import play.mvc.Result;
 import service.CartService;
-import service.ProductService;
 
 import javax.transaction.Transactional;
 

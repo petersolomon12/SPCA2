@@ -3,19 +3,14 @@ package service;
 import Command.AddProductCommand;
 import Factory.ProductFactory;
 import Iterator.AvailProductIterator;
-import Strategy.JsonUuid;
-import Strategy.Uuid;
 import com.google.inject.Inject;
 import models.Product;
-import models.User;
-import net.bytebuddy.implementation.bind.annotation.Super;
 import play.data.FormFactory;
 import play.mvc.Http;
 import repository.ProductRepos;
 import repository.UserRepos;
 
 import java.util.List;
-import java.util.UUID;
 
 public class ProductService {
 

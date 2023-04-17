@@ -1,12 +1,10 @@
 package controllers;
 
 import com.google.inject.Inject;
-import models.Product;
 import models.Reviews;
 import play.libs.Json;
 import play.mvc.Http;
 import play.mvc.Result;
-import service.ProductService;
 import service.ReviewService;
 
 import javax.transaction.Transactional;

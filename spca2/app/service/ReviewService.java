@@ -1,18 +1,14 @@
 package service;
 
 import Strategy.JsonUuid;
-import Strategy.Uuid;
 import Visitor.ReviewVisitor;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Product;
 import models.Reviews;
 import play.data.FormFactory;
 import play.mvc.Http;
 import repository.ProductRepos;
-import repository.PurchaseHistoryRepos;
 import repository.ReviewRepos;
-import repository.UserRepos;
 
 import java.util.UUID;
 

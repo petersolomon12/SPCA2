@@ -1,7 +1,6 @@
 package repository;
 
 import com.google.inject.Inject;
-import models.Cart;
 import models.PurchaseHistory;
 import play.db.jpa.JPAApi;
 

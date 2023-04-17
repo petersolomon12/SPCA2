@@ -3,16 +3,9 @@ package service;
 import Facade.PurchasingHistoryFacade;
 import com.google.inject.Inject;
 import models.Cart;
-import models.Product;
-import models.PurchaseHistory;
-import models.User;
 import play.data.FormFactory;
-import repository.ProductRepos;
 import repository.PurchaseHistoryRepos;
 import repository.UserRepos;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class PurchaseHistoryService {
 
@@ -30,7 +23,6 @@ public class PurchaseHistoryService {
 
     //ADDED FACADE PATTERN
     public void insertPurchase(Cart cart){
-        System.out.println("LINE 33");
         PurchasingHistoryFacade purchasingHistoryFacade = new PurchasingHistoryFacade(purchaseHistoryRepos, userRepos);
         purchasingHistoryFacade.insertPurchase(cart);
     }

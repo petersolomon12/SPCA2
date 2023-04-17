@@ -8,8 +8,6 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
-//TODO ADD JOIN DATE FOR PORTFOLIO PAGE.
-//TODO Remove Vendor type upon registering, when they create job for the first time then change their type to isVendor. Gives them Vendor and user privileges.
 @Entity
 public class User {
 

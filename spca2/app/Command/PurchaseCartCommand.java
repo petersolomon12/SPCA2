@@ -2,7 +2,6 @@ package Command;
 
 import models.Cart;
 import models.Product;
-import play.mvc.Http;
 import repository.CartRepos;
 import repository.ProductRepos;
 import service.CartService;
@@ -26,9 +25,6 @@ public class PurchaseCartCommand implements Command {
 
     @Override
     public void execute() throws Exception {
-        /*
-        Will have a field for json to get user id
-        */
         for (Product existingProduct : cartRepos.getCart(cartObject).getProduct()) {
             existingProduct.setStockLevel(existingProduct.getStockLevel() - 1);
             productRepos.updateProduct(existingProduct);

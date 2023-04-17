@@ -2,7 +2,6 @@ package controllers;
 
 import com.google.inject.Inject;
 import models.User;
-import play.data.FormFactory;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;

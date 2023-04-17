@@ -17,7 +17,6 @@ public class UserService {
 
     private final UserRepos userRepos;
     public final FormFactory formFactory;
-    private final User user = new User();
 
 
     @Inject
@@ -67,7 +66,6 @@ public class UserService {
 
     public void deleteUser(Http.Request userRequest) throws Exception {
         User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
-
         User existingUser = userRepos.getUser(userObject.getId());
 
         userRepos.deleteUser(existingUser);
@@ -75,7 +73,6 @@ public class UserService {
 
     public User updateUser(Http.Request userRequest) throws Exception {
         User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
-
         UserValidator dupUserValidator = new DupUserValidator(userRepos);
         dupUserValidator.validateUser(userObject);
 
@@ -92,9 +89,6 @@ public class UserService {
 
     public User getExistingUser(Http.Request userRequest) throws Exception {
         User userObject = formFactory.form(User.class).bindFromRequest(userRequest).get();
-
-        System.out.println(userObject);
-
         return userCheck(userObject);
     }
 

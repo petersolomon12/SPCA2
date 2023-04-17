@@ -2,8 +2,6 @@ package service;
 
 import Command.PurchaseCartCommand;
 import Strategy.JsonUuid;
-import Strategy.Uuid;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Cart;
 import models.Product;
@@ -14,7 +12,10 @@ import repository.CartRepos;
 import repository.ProductRepos;
 import repository.UserRepos;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.UUID;
 
 public class CartService {
 
@@ -101,7 +102,6 @@ public class CartService {
         Cart cartObject = formFactory.form(Cart.class).bindFromRequest(cartRequest).get();
         UUID uuid = jsonUuid.getUuid(cartRequest);
         cartObject.setUser(userRepos.getUser(uuid));
-        System.out.println("Line 104");
         PurchaseCartCommand purchaseCommand = new PurchaseCartCommand(cartObject, this, cartRepos, productRepos, purchaseHistoryService);
         purchaseCommand.execute();
         return cartObject;
