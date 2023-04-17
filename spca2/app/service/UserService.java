@@ -25,6 +25,7 @@ public class UserService {
         this.formFactory = formFactory;
     }
 
+    //ADDED DECORATOR PATTERN
     public User addUser(Http.Request userRequest) throws Exception {
         User user = formFactory.form(User.class).bindFromRequest(userRequest).get();
         UserValidator emailValidator = new EmailValidator();
