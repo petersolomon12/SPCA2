@@ -26,19 +26,23 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
+
     @OneToMany (fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     public List<PurchaseHistory> purchaseHistory;
     public User() {
 
     }
 
-    public User(String firstname, String lastname, String password, String email, String address, UserType userType, List <PurchaseHistory> purchaseHistory) {
+    public User(String firstname, String lastname, String password, String email, String address, UserType userType, PaymentType paymentType, List <PurchaseHistory> purchaseHistory) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
         this.email = email;
         this.address = address;
         this.userType = userType;
+        this.paymentType = paymentType;
         this.purchaseHistory = purchaseHistory;
     }
 
@@ -106,6 +110,14 @@ public class User {
         this.purchaseHistory = purchaseHistory;
     }
 
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -116,6 +128,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", userType=" + userType +
+                ", paymentType=" + paymentType +
                 ", purchaseHistory=" + purchaseHistory +
                 '}';
     }
@@ -123,5 +136,10 @@ public class User {
     public enum UserType {
         ADMIN,
         CUSTOMER,
+    }
+
+    public enum PaymentType {
+        VISA,
+        MASTERCARD,
     }
 }
